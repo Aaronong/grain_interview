@@ -27,9 +27,9 @@ production:
   #database: db/production.sqlite3
   adapter: postgresql
   encoding: unicode
-  database: dbkqueuh735dov
-  host: ec2-54-221-251-195.compute-1.amazonaws.com
+  database: d4gtausmakj972
+  host: ec2-54-225-199-107.compute-1.amazonaws.com
   #pool: 5
-  username: oxxivqwdqsnkfu
-  password: 19e5773c093fdca43cf6b6a62516c1a78480bdb6ff47f69ca9bf17219a252218
+  username: sqothugvpbnevr
+  password: ad4b924cefe832d7c0a9ea0ff2a99a1ce91b002046b12b183e22b2bb6866c1cf
 
