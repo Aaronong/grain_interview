@@ -9,7 +9,7 @@ end
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
 # Use postgres as the database for Active Record
-#gem 'sqlite3', group: [:development, :test]
+gem 'sqlite3', group: [:development, :test]
 gem 'pg', '~> 0.21.0'
 # Use faker to create data in db.seed
 gem 'faker'
