@@ -11,6 +11,8 @@ gem 'rails', '~> 5.1.4'
 # Use postgres as the database for Active Record
 #gem 'sqlite3', group: [:development, :test]
 gem 'pg', '~> 0.21.0'
+# Use faker to create data in db.seed
+gem 'faker'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -30,7 +32,6 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.5'
-  gem 'faker'
 end
 
 group :test do
