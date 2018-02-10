@@ -1,13 +1,17 @@
 require 'rails_helper'
+require 'date'
+
+def valid_date?(str, format = '%y-%d-%m')
+  Date.parse(str, format)
+  true
+rescue StandardError
+  false
+end
 
 RSpec.describe 'Orders API', type: :request do
   # initialize test data
-  # let!(:meals) { FactoryGirl.create_list(:meal, 10) }
-  # let(:meal_id) { meals.first.id }
-  let!(:delivery_orders) { FactoryGirl.create_list(:delivery_order, 10) }
-  let(:delivery_order_id) { 1 }
-  # let!(:order_items) { FactoryGirl.create_list(:order_item, 10) }
-  # let(:order_item_id) { order_items.first.id }
+  let!(:delivery_orders) { DeliveryOrder.all }
+  let(:delivery_order_id) { delivery_orders.first.id }
 
   # Test suite for GET /orders
   describe 'GET /orders' do
@@ -17,11 +21,19 @@ RSpec.describe 'Orders API', type: :request do
     it 'returns DeliveryOrders' do
       # Note `json` is a custom helper to parse JSON responses
       expect(json).not_to be_empty
-      expect(json.size).to eq(10)
+      expect(json.size).to eq(5)
     end
 
     it 'returns status code 200' do
       expect(response).to have_http_status(200)
+    end
+
+    it 'has properly formed data' do
+      json.each do |row|
+        expect(row['order_id']).not_to be_empty
+        expect(valid_date?(row['delivery_date'])).to be true
+        expect(row['delivery_time']).to match(/[0-1][0-9]:[0|3]0\-[0-1][0-9]:[0|3]0[A|P]M/)
+      end
     end
   end
 
@@ -32,16 +44,26 @@ RSpec.describe 'Orders API', type: :request do
     context 'when the record exists' do
       it 'returns the order' do
         expect(json).not_to be_empty
-        expect(json['id']).to eq(delivery_order_id)
       end
 
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
       end
+
+      it 'has properly formed data' do
+        expect(json['order_id']).not_to be_empty
+        expect(valid_date?(json['delivery_date'])).to be true
+        expect(json['delivery_time']).to match(/[0-1][0-9]:[0|3]0\-[0-1][0-9]:[0|3]0[A|P]M/)
+        json['order_items'].each do |item|
+          expect(item['name']).not_to be_empty
+          expect(item['quantity']).to be > 0
+          expect(item['total_price']).to be > 0
+        end
+      end
     end
 
     context 'when the record does not exist' do
-      let(:delivery_order_id) { 100 }
+      let(:delivery_order_id) { 1_000_000 }
 
       it 'returns status code 404' do
         expect(response).to have_http_status(404)

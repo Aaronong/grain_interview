@@ -28,8 +28,6 @@ class OrdersController < ApplicationController
       processed_order[:order_id] = order.order_id
       processed_order[:delivery_date] = order.serving_datetime.to_date
       processed_order[:delivery_time] = datetime_to_time(order.serving_datetime)
-      # processed_order[:order_items] = display_order_item(order.order_items)
-      pp order.id
       processed_order
     end
   end
@@ -50,7 +48,7 @@ class OrdersController < ApplicationController
     elsif startHours == 12
       postfix = 'PM'
     end
-    endMins = startMins + 30 % 60
+    endMins = startMins == 30 ? 0 : 30
     endHours = startMins == 30 ? startHours + 1 : startHours
     if endHours > 12
       postfix = postfix == 'AM' ? 'PM' : 'AM'
