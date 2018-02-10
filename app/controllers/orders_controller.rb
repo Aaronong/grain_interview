@@ -58,12 +58,16 @@ class OrdersController < ApplicationController
   end
 
   def display_order_item(order_items)
-    order_items.map do |order|
+    order_items = order_items.map do |order|
       display_item = {}
       display_item[:name] = order.meal.name
       display_item[:quantity] = order.quantity
       display_item[:total_price] = order.quantity * order.unit_price
       display_item
+    end
+
+    order_items.select do |order|
+      order[:quantity] > 0
     end
   end
 end
