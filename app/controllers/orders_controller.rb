@@ -29,6 +29,7 @@ class OrdersController < ApplicationController
       processed_order[:order_id] = order.order_id
       processed_order[:delivery_date] = order.serving_datetime.to_date
       processed_order[:delivery_time] = datetime_to_time(order.serving_datetime)
+      processed_order[:feedback_submitted] = order.feedback.nil? ? false : true
       processed_order[:order_items] = display_general_order_item(order.order_items)
       processed_order
     end
