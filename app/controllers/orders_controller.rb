@@ -25,9 +25,12 @@ class OrdersController < ApplicationController
   def set_orders
     @orders = DeliveryOrder.all.map do |order|
       processed_order = {}
+      processed_order[:id] = order.id
       processed_order[:order_id] = order.order_id
       processed_order[:delivery_date] = order.serving_datetime.to_date
       processed_order[:delivery_time] = datetime_to_time(order.serving_datetime)
+      processed_order[:feedback_submitted] = order.feedback.nil? ? false : true
+      processed_order[:order_items] = display_general_order_item(order.order_items)
       processed_order
     end
   end
@@ -68,6 +71,15 @@ class OrdersController < ApplicationController
 
     order_items.select do |order|
       order[:quantity] > 0
+    end
+  end
+
+  def display_general_order_item(order_items)
+    order_items.map do |order|
+      display_item = {}
+      display_item[:order_item_id] = order.id
+      display_item[:name] = order.meal.name
+      display_item
     end
   end
 end
